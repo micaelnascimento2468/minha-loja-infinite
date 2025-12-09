@@ -108,29 +108,35 @@ function abrirModalProduto(produto) {
     detalhesProdutoDiv.appendChild(variacoesHTML);
 
     // ----------------------------------------------------------------------
-    // BLOCO CORRIGIDO: Gera Link InfinitePay SEM URL ENCODING
+    // BLOCO FINAL CORRIGIDO: Cálculo de Preço em Centavos
     // ----------------------------------------------------------------------
 
     // 1. Prepara dados do produto
     const nomeProduto = produto.NOME; 
-    // Limpa o preço, garantindo que seja um número sem vírgulas/pontos (79,90 -> 7990)
-    const precoLimpoParaCentavos = precoLimpo.replace(',', '').replace('.', ''); 
+    
+    // PASSO VITAL: Limpar e converter o preço para um número inteiro em centavos
+    // Transforma o formato brasileiro (Ex: "1.000,50") para o formato JS (Ex: "1000.50")
+    let precoParaCalculo = precoLimpo.replace('.', '').replace(',', '.').trim(); 
+    let precoNumerico = parseFloat(precoParaCalculo) || 0; 
+    // Multiplica por 100 e arredonda para obter o valor inteiro em centavos
+    let precoEmCentavos = Math.round(precoNumerico * 100); 
+    
     
     // 2. Monta o Array de Itens (JSON stringified)
     const itemsArray = [{
         "name": nomeProduto,
-        "price": parseInt(precoLimpoParaCentavos),
-        "quantity": 1
+        "price": precoEmCentavos, // VALOR AGORA ESTÁ EM CENTAVOS
+        "quantity": 1 
     }];
     
-    // Converte o array em string JSON (REMOVEMOS O encodeURIComponent)
+    // Converte o array em string JSON (sem URL Encoding)
     const itemsJsonString = JSON.stringify(itemsArray);
 
-    // 3. Monta o link final (A string JSON vai 'pura' na URL, o que o InfinitePay aceita)
+    // 3. Monta o link final 
     const infinitePayLink = `https://checkout.infinitepay.io/${INFINITEPAY_USER}?items=${itemsJsonString}&redirect_url=https://micaelnascimento2468.github.io/minha-loja-infinite/tela-de-agradecimento`;
     
     // 4. Atribui ao input oculto
-    document.getElementById('infinitepay-redirect').value = infinitePayLink;
+    document.getElementById('infinitepay-redirect').value = infinitePayPayLink;
 
     // ----------------------------------------------------------------------
 
