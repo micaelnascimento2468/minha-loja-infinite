@@ -74,12 +74,10 @@ function abrirModalProduto(produto) {
     // Configura inputs ocultos do formulário
     document.getElementById('input-produto-nome').value = `${produto.ID_PRODUTO} - ${produto.NOME}`;
     document.getElementById('input-preco-final').value = `R$ ${precoLimpo}`; 
-
     // --- CORREÇÃO AQUI ---
     // Define a ação (URL de destino)
-    checkoutForm.setAttribute('action', `https://formsubmit.co/${FORM_SUBMIT_EMAIL}`);
-    // Define o método POST explicitamente para evitar o erro "Form should POST"
-    checkoutForm.setAttribute('method', 'POST');
+   checkoutForm.setAttribute('action', `https://formsubmit.co/${FORM_SUBMIT_EMAIL}`); 
+checkoutForm.setAttribute('method', 'POST');
     // ---------------------
     
     // Tratamento de Variações
