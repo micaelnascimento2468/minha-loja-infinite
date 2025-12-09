@@ -3,10 +3,10 @@
 // ====================================================================
 
 // 1. COLE AQUI A URL DO SEU WEB APP (APPS SCRIPT) - TERMINA EM /exec
-const API_URL = 'https://script.google.com/macros/s/AKfycbyYqFl-fYUf04plIYnbLrU-aPqYpDR0zNPy0P-fMb6EqxJFTb7zmY9td-Kej-VinM5K/exec'; 
+const API_URL = 'COLE_SEU_LINK_DO_APPS_SCRIPT_AQUI'; // <-- EDITE AQUI
 
 // 2. SEU EMAIL DO FORMSUBMIT
-const FORM_SUBMIT_EMAIL = 'micaelcomdeus123@gmail.com'; 
+const FORM_SUBMIT_EMAIL = 'seu.email.de.notificacao@exemplo.com'; // <-- EDITE AQUI
 
 // 3. SEU USUÁRIO DA INFINITEPAY
 const INFINITEPAY_USER = 'audaces'; 
@@ -74,10 +74,7 @@ function abrirModalProduto(produto) {
     // Configura inputs ocultos do formulário
     document.getElementById('input-produto-nome').value = `${produto.ID_PRODUTO} - ${produto.NOME}`;
     document.getElementById('input-preco-final').value = `R$ ${precoLimpo}`; 
-
-    // ATRIBUIÇÃO MAIS SEGURA PARA EVITAR ERROS DE SINTAXE
-    checkoutForm.action = `https://formsubmit.co/${FORM_SUBMIT_EMAIL}`;
-    checkoutForm.method = 'POST';
+    checkoutForm.setAttribute('action', `https://formsubmit.co/${FORM_SUBMIT_EMAIL}`);
     
     // Tratamento de Variações
     const variacoesHTML = document.createElement('div');
@@ -122,13 +119,7 @@ function fecharModal() {
 }
 
 closeButton.addEventListener('click', fecharModal);
-
-// CORREÇÃO DO ERRO DE SINTAXE: Parênteses e chaves corrigidos
-window.addEventListener('click', (e) => { 
-    if (e.target === modal) {
-        fecharModal(); 
-    }
-});
+window.addEventListener('click', (e) => { if (e.target === modal) fecharModal(); });
 
 // Inicia
 carregarProdutos();
