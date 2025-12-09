@@ -112,7 +112,7 @@ function abrirModalProduto(produto) {
     // ----------------------------------------------------------------------
 
     // 1. Prepara dados do produto
-    const nomeProduto = produto.NOME; // Pega o nome do produto selecionado
+    const nomeProduto = produto.NOME; 
     // Limpa o preço, garantindo que seja um número sem vírgulas/pontos (79,90 -> 7990)
     const precoLimpoParaCentavos = precoLimpo.replace(',', '').replace('.', ''); 
     
