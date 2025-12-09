@@ -74,11 +74,10 @@ function abrirModalProduto(produto) {
     // Configura inputs ocultos do formulário
     document.getElementById('input-produto-nome').value = `${produto.ID_PRODUTO} - ${produto.NOME}`;
     document.getElementById('input-preco-final').value = `R$ ${precoLimpo}`; 
-    )
-    // Define a ação (URL de destino)
-   checkoutForm.setAttribute('action', `https://formsubmit.co/${FORM_SUBMIT_EMAIL}`); 
-checkoutForm.setAttribute('method', 'POST');
-    // ---------------------
+
+    // ATRIBUIÇÃO MAIS SEGURA PARA EVITAR ERROS DE SINTAXE
+    checkoutForm.action = `https://formsubmit.co/${FORM_SUBMIT_EMAIL}`;
+    checkoutForm.method = 'POST';
     
     // Tratamento de Variações
     const variacoesHTML = document.createElement('div');
@@ -123,7 +122,13 @@ function fecharModal() {
 }
 
 closeButton.addEventListener('click', fecharModal);
-window.addEventListener('click', (e) => { if (e.target === modal) fecharModal(); });
+
+// CORREÇÃO DO ERRO DE SINTAXE: Parênteses e chaves corrigidos
+window.addEventListener('click', (e) => { 
+    if (e.target === modal) {
+        fecharModal(); 
+    }
+});
 
 // Inicia
 carregarProdutos();
