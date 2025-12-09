@@ -3,10 +3,10 @@
 // ====================================================================
 
 // 1. COLE AQUI A URL DO SEU WEB APP (APPS SCRIPT) - TERMINA EM /exec
-const API_URL = 'https://script.google.com/macros/s/AKfycbyYqFl-fYUf04plIYnbLrU-aPqYpDR0zNPy0P-fMb6EqxJFTb7zmY9td-Kej-VinM5K/exec'; // <-- EDITE AQUI
+const API_URL = 'https://script.google.com/macros/s/AKfycbyYqFl-fYUf04plIYnbLrU-aPqYpDR0zNPy0P-fMb6EqxJFTb7zmY9td-Kej-VinM5K/exec'; 
 
 // 2. SEU EMAIL DO FORMSUBMIT
-const FORM_SUBMIT_EMAIL = 'micaelcomdeus123@gmail.com'; // <-- EDITE AQUI
+const FORM_SUBMIT_EMAIL = 'micaelcomdeus123@gmail.com'; 
 
 // 3. SEU USUÁRIO DA INFINITEPAY
 const INFINITEPAY_USER = 'audaces'; 
@@ -74,7 +74,13 @@ function abrirModalProduto(produto) {
     // Configura inputs ocultos do formulário
     document.getElementById('input-produto-nome').value = `${produto.ID_PRODUTO} - ${produto.NOME}`;
     document.getElementById('input-preco-final').value = `R$ ${precoLimpo}`; 
-    checkoutForm.setAttribute('action', `https://formsubmit.co/${FORM_SUBMIT_EMAIL}` method="POST");
+
+    // --- CORREÇÃO AQUI ---
+    // Define a ação (URL de destino)
+    checkoutForm.setAttribute('action', `https://formsubmit.co/${FORM_SUBMIT_EMAIL}`);
+    // Define o método POST explicitamente para evitar o erro "Form should POST"
+    checkoutForm.setAttribute('method', 'POST');
+    // ---------------------
     
     // Tratamento de Variações
     const variacoesHTML = document.createElement('div');
