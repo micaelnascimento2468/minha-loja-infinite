@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Loja Online | Audaces</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>🛒 Minha Loja Audaces</h1>
+        <p>Produtos exclusivos para você.</p>
+    </header>
+
+    <main class="container">
+        <section id="lista-produtos" class="produtos-grid">
+            <h2>Nossos Produtos</h2>
+            <p>Carregando produtos...</p>
+        </section>
+
+        <div id="modal-produto" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <div id="detalhes-produto">
+                    </div>
+                
+                <hr>
+
+                <h3>Finalizar Pedido</h3>
+                <form id="checkout-form" target="_blank">
+                    
+                    <input type="hidden" name="_next" id="infinitepay-redirect"> 
+                    <input type="hidden" name="_subject" value="NOVO PEDIDO DE COMPRA NA LOJA ONLINE!">
+                    <input type="hidden" name="Produto_ID_e_Nome" id="input-produto-nome">
+                    <input type="hidden" name="Variacao_Escolhida" id="input-variacao">
+                    <input type="hidden" name="Preco_Final" id="input-preco-final">
+
+                    <label for="nome">Nome Completo:</label>
+                    <input type="text" id="nome" name="Nome_Cliente" required>
+
+                    <label for="email">E-mail (para confirmação do FormSubmit):</label>
+                    <input type="email" id="email" name="_replyto" required>
+
+                    <label for="telefone">Telefone:</label>
+                    <input type="tel" id="telefone" name="Telefone_Cliente">
+
+                    <label for="endereco">Endereço Completo (Rua, Número, Bairro, CEP, Cidade, Estado):</label>
+                    <textarea id="endereco" name="Endereco_Cliente" rows="3" required></textarea>
+
+                    <button type="submit" id="comprar-btn">Ir para o Checkout InfinitePay</button>
+                    <p class="aviso">Após clicar, você será redirecionado para a página de pagamento seguro da InfinitePay.</p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Minha Loja Audaces. Todos os direitos reservados.</p>
+    </footer>
+
+    </body>
+</html>
