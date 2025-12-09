@@ -3,10 +3,10 @@
 // ====================================================================
 
 // 1. COLE AQUI A URL DO SEU WEB APP (APPS SCRIPT) - TERMINA EM /exec
-const API_URL = 'COLE_SEU_LINK_DO_APPS_SCRIPT_AQUI'; // <-- EDITE AQUI
+const API_URL = 'https://script.google.com/macros/s/AKfycbyYqFl-fYUf04plIYnbLrU-aPqYpDR0zNPy0P-fMb6EqxJFTb7zmY9td-Kej-VinM5K/exec'; // <-- VERIFIQUE/EDITE AQUI
 
 // 2. SEU EMAIL DO FORMSUBMIT
-const FORM_SUBMIT_EMAIL = 'seu.email.de.notificacao@exemplo.com'; // <-- EDITE AQUI
+const FORM_SUBMIT_EMAIL = 'micaelcomdeus123@gmail.com'; // <-- VERIFIQUE/EDITE AQUI
 
 // 3. SEU USUÁRIO DA INFINITEPAY
 const INFINITEPAY_USER = 'audaces'; 
@@ -74,11 +74,8 @@ function abrirModalProduto(produto) {
     // Configura inputs ocultos do formulário
     document.getElementById('input-produto-nome').value = `${produto.ID_PRODUTO} - ${produto.NOME}`;
     document.getElementById('input-preco-final').value = `R$ ${precoLimpo}`; 
+    checkoutForm.setAttribute('action', `https://formsubmit.co/${FORM_SUBMIT_EMAIL}`);
     
-    // 1. Configuração do FormSubmit (Garantindo POST)
-    checkoutForm.action = `https://formsubmit.co/${FORM_SUBMIT_EMAIL}`;
-    checkoutForm.method = 'POST'; // Necessário para o FormSubmit
-
     // Tratamento de Variações
     const variacoesHTML = document.createElement('div');
     variacoesHTML.id = 'variacao-container';
@@ -107,26 +104,32 @@ function abrirModalProduto(produto) {
     if (oldVariations) oldVariations.remove();
     detalhesProdutoDiv.appendChild(variacoesHTML);
 
-    // 2. CORREÇÃO CRÍTICA: Geração do Link InfinitePay com estrutura JSON de Itens
-    const nomeProduto = produto.NOME; 
-    // Limpa o preço para obter um número inteiro em centavos (ex: 79,90 -> 7990)
+    // ----------------------------------------------------------------------
+    // CÓDIGO CORRIGIDO: Gera Link InfinitePay com estrutura JSON de Itens
+    // ----------------------------------------------------------------------
+
+    // 1. Prepara dados do produto
+    const nomeProduto = produto.NOME; // Pega o nome do produto selecionado
+    // 2. Limpa o preço (R$ 79,90 -> 7990)
     const precoLimpoParaCentavos = precoLimpo.replace(',', '').replace('.', ''); 
     
-    // Monta o Array de Itens
+    // 3. Monta o Array de Itens (JSON stringified)
     const itemsArray = [{
         "name": nomeProduto,
         "price": parseInt(precoLimpoParaCentavos), // Deve ser um número inteiro em centavos
-        "quantity": 1 // Assumindo 1 por padrão
+        "quantity": 1 // Assumindo 1 item por clique no modal
     }];
     
-    // Converte o array em string JSON e URI-encode
+    // 4. Converte o array em string JSON e URI-encode (necessário para URL)
     const itemsJsonString = encodeURIComponent(JSON.stringify(itemsArray));
 
-    // Monta o link final com os parâmetros 'items' e 'redirect_url'
+    // 5. Monta o link final (Usando checkout.infinitepay.io e o redirect)
     const infinitePayLink = `https://checkout.infinitepay.io/${INFINITEPAY_USER}?items=${itemsJsonString}&redirect_url=https://micaelnascimento2468.github.io/minha-loja-infinite/tela-de-agradecimento`;
     
-    // Atribui ao input oculto
+    // 6. Atribui ao input oculto
     document.getElementById('infinitepay-redirect').value = infinitePayLink;
+
+    // ----------------------------------------------------------------------
 
     modal.style.display = 'block';
 }
@@ -137,13 +140,7 @@ function fecharModal() {
 }
 
 closeButton.addEventListener('click', fecharModal);
-
-// CORREÇÃO DE SINTAXE: Garantindo a estrutura correta para o listener de janela
-window.addEventListener('click', (e) => { 
-    if (e.target === modal) {
-        fecharModal(); 
-    }
-});
+window.addEventListener('click', (e) => { if (e.target === modal) fecharModal(); });
 
 // Inicia
 carregarProdutos();
