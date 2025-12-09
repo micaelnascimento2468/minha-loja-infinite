@@ -74,8 +74,11 @@ function abrirModalProduto(produto) {
     // Configura inputs ocultos do formulário
     document.getElementById('input-produto-nome').value = `${produto.ID_PRODUTO} - ${produto.NOME}`;
     document.getElementById('input-preco-final').value = `R$ ${precoLimpo}`; 
-    checkoutForm.setAttribute('action', `https://formsubmit.co/${FORM_SUBMIT_EMAIL}`);
     
+    // 1. Configuração do FormSubmit (Garantindo POST)
+    checkoutForm.action = `https://formsubmit.co/${FORM_SUBMIT_EMAIL}`;
+    checkoutForm.method = 'POST'; // Necessário para o FormSubmit
+
     // Tratamento de Variações
     const variacoesHTML = document.createElement('div');
     variacoesHTML.id = 'variacao-container';
@@ -104,10 +107,25 @@ function abrirModalProduto(produto) {
     if (oldVariations) oldVariations.remove();
     detalhesProdutoDiv.appendChild(variacoesHTML);
 
-    // Gera Link InfinitePay (Remove pontos e vírgulas para centavos)
-    // Ex: 79,90 -> 7990
-    const precoCentavos = precoLimpo.replace(/[.,]/g, '');
-    const infinitePayLink = `https://www.infinitepay.io/checkout/${INFINITEPAY_USER}/${precoCentavos}`;
+    // 2. CORREÇÃO CRÍTICA: Geração do Link InfinitePay com estrutura JSON de Itens
+    const nomeProduto = produto.NOME; 
+    // Limpa o preço para obter um número inteiro em centavos (ex: 79,90 -> 7990)
+    const precoLimpoParaCentavos = precoLimpo.replace(',', '').replace('.', ''); 
+    
+    // Monta o Array de Itens
+    const itemsArray = [{
+        "name": nomeProduto,
+        "price": parseInt(precoLimpoParaCentavos), // Deve ser um número inteiro em centavos
+        "quantity": 1 // Assumindo 1 por padrão
+    }];
+    
+    // Converte o array em string JSON e URI-encode
+    const itemsJsonString = encodeURIComponent(JSON.stringify(itemsArray));
+
+    // Monta o link final com os parâmetros 'items' e 'redirect_url'
+    const infinitePayLink = `https://checkout.infinitepay.io/${INFINITEPAY_USER}?items=${itemsJsonString}&redirect_url=https://micaelnascimento2468.github.io/minha-loja-infinite/tela-de-agradecimento`;
+    
+    // Atribui ao input oculto
     document.getElementById('infinitepay-redirect').value = infinitePayLink;
 
     modal.style.display = 'block';
@@ -119,7 +137,13 @@ function fecharModal() {
 }
 
 closeButton.addEventListener('click', fecharModal);
-window.addEventListener('click', (e) => { if (e.target === modal) fecharModal(); });
+
+// CORREÇÃO DE SINTAXE: Garantindo a estrutura correta para o listener de janela
+window.addEventListener('click', (e) => { 
+    if (e.target === modal) {
+        fecharModal(); 
+    }
+});
 
 // Inicia
 carregarProdutos();
