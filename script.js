@@ -4,7 +4,7 @@
 
 // 1. COLE AQUI O LINK COMPLETO DE DADOS DOS PRODUTOS (URL CSV DO GOOGLE SHEETS)
 // Exemplo: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR6z.../pub?gid=0&single=true&output=csv'
-const DATA_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSw4GUttxFKGSRUfj3DPthg2-zCRtLIMgBLaxC-i5KD_TJ6VgStqC_uus-fLBjft1hFE7m5k43Bbv11/pubhtml'; // <-- EDITE AQUI
+const DATA_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSw4GUttxFKGSRUfj3DPthg2-zCRtLIMgBLaxC-i5KD_TJ6VgStqC_uus-fLBjft1hFE7m5k43Bbv11/pub?output=csv'; // <-- EDITE AQUI
 
 // 2. COLE AQUI O SEU EMAIL DE RECEBIMENTO DE PEDIDOS (FormSubmit)
 // IMPORTANTE: Você precisa confirmar este email no FormSubmit após o primeiro uso.
