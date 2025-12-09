@@ -108,7 +108,9 @@ function abrirModalProduto(produto) {
     detalhesProdutoDiv.appendChild(variacoesHTML);
 
     // ----------------------------------------------------------------------
-    // NOVO BLOCO: Gera Link InfinitePay com estrutura JSON de Itens
+
+    // ----------------------------------------------------------------------
+    // BLOCO CORRIGIDO: Gera Link InfinitePay SEM URL ENCODING
     // ----------------------------------------------------------------------
 
     // 1. Prepara dados do produto
@@ -119,14 +121,14 @@ function abrirModalProduto(produto) {
     // 2. Monta o Array de Itens (JSON stringified)
     const itemsArray = [{
         "name": nomeProduto,
-        "price": parseInt(precoLimpoParaCentavos), // Deve ser um número inteiro em centavos
-        "quantity": 1 // Assumindo 1 por padrão no modal
+        "price": parseInt(precoLimpoParaCentavos),
+        "quantity": 1
     }];
     
-    // Converte o array em string JSON e URI-encode (para uso na URL)
-    const itemsJsonString = encodeURIComponent(JSON.stringify(itemsArray));
+    // Converte o array em string JSON (REMOVEMOS A FUNÇÃO ENCODEURIComponent)
+    const itemsJsonString = JSON.stringify(itemsArray);
 
-    // 3. Monta o link final (Usando checkout.infinitepay.io e o redirect)
+    // 3. Monta o link final (Agora, a string JSON vai 'pura' na URL)
     const infinitePayLink = `https://checkout.infinitepay.io/${INFINITEPAY_USER}?items=${itemsJsonString}&redirect_url=https://micaelnascimento2468.github.io/minha-loja-infinite/tela-de-agradecimento`;
     
     // 4. Atribui ao input oculto
@@ -135,6 +137,7 @@ function abrirModalProduto(produto) {
     // ----------------------------------------------------------------------
 
     modal.style.display = 'block';
+
 }
 
 function fecharModal() {
